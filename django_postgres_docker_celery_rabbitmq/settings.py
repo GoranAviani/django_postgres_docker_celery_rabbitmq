@@ -119,3 +119,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+from celery.schedules import crontab
+
+# beat settings for fun with args
+CELERY_BEAT_SCHEDULE = {
+    'task-periodic_task': {
+        'task': 'test_app.tasks.periodic_task',
+        # 'schedule': crontab(minute="*/30"),
+        'schedule': 4,
+
+    },
+}
