@@ -15,8 +15,19 @@ services:
       - 8000:8000
     command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     depends_on:
+      - postgres
       - rabbitmq
       - celery_worker
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_USER: testa
+      POSTGRES_DB: testa
+      POSTGRES_PASS: testa
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
   ## message queue for celery
   rabbitmq:
     image: rabbitmq:3.8-alpine
@@ -28,3 +39,4 @@ services:
     ports: []
     depends_on:
       - rabbitmq
+      - postgres
